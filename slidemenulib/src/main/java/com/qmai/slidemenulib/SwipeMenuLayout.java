@@ -1,4 +1,4 @@
-package com.qmai.slidemenu.view;
+package com.qmai.slidemenulib;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,8 +14,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
-
-import com.qmai.slidemenu.R;
 
 /**
  * 【Item侧滑删除菜单】

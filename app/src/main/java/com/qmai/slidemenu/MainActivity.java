@@ -6,7 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.qmai.slidemenu.view.SlidingMenu;
+import com.qmai.slidemenulib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;

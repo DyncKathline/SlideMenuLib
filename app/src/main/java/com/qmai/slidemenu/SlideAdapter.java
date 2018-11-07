@@ -52,17 +52,13 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.MyViewHolder
         TextView view_edit;
         TextView tv_top;
         ImageView iv_avatar;
-//        SwipeMenuLayout swipeMenuLayout;
-        View contentView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.item_tv_title);
 //            tv_top = (TextView) itemView.findViewById(R.id.item_tv_top);
-//            contentView = itemView.findViewById(R.id.item_content);
 //
 //            view_del = (TextView) itemView.findViewById(R.id.item_tv_del);
 //            view_edit = (TextView) itemView.findViewById(R.id.item_tv_edit);
-//            swipeMenuLayout = (SwipeMenuLayout) itemView.findViewById(R.id.item_layout_swip);
             iv_avatar = (ImageView) itemView.findViewById(R.id.item_avatar);
         }
     }

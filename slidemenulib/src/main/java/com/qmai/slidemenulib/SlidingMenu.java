@@ -1,4 +1,4 @@
-package com.qmai.slidemenu.view;
+package com.qmai.slidemenulib;
 
 import android.content.Context;
 import android.util.AttributeSet;

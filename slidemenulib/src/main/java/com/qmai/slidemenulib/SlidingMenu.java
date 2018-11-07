@@ -59,8 +59,20 @@ public class SlidingMenu extends ViewGroup {
         mMaxVelocity = ViewConfiguration.get(getContext()).getScaledMaximumFlingVelocity();
     }
 
+    private boolean ensureChildren(){
+        int childCount = getChildCount();
+
+        if(childCount!=2)
+            return false;
+
+        return true;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if(!ensureChildren()) {
+            throw new RuntimeException("Only two child is allowed.");
+        }
         //测量所有的子view
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -74,6 +86,9 @@ public class SlidingMenu extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         Log.d(TAG, "l = " + l + "....." + "t = " + t + "....." + "r = " + r + "....." + "b = " + b);
+        if(!ensureChildren()) {
+            throw new RuntimeException("Only two child is allowed.");
+        }
         menu = getChildAt(0);
         content = getChildAt(1);
         menuWidth = menu.getMeasuredWidth();

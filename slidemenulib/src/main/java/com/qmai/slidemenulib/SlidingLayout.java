@@ -55,8 +55,20 @@ public class SlidingLayout extends ViewGroup {
         mMaxVelocity = ViewConfiguration.get(getContext()).getScaledMaximumFlingVelocity();
     }
 
+    private boolean ensureChildren(){
+        int childCount = getChildCount();
+
+        if(childCount!=1)
+            return false;
+
+        return true;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if(!ensureChildren()) {
+            throw new RuntimeException("Only one child is allowed.");
+        }
         //测量所有的子view
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -70,6 +82,9 @@ public class SlidingLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         Log.d(TAG, "l = " + l + "....." + "t = " + t + "....." + "r = " + r + "....." + "b = " + b);
+        if(!ensureChildren()) {
+            throw new RuntimeException("Only one child is allowed.");
+        }
         content = getChildAt(0);
         contentWidth = content.getMeasuredWidth();
         content.layout(0, 0, contentWidth, content.getMeasuredHeight());

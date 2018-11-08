@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 public class SlidingLayout extends ViewGroup {
-    private static final String TAG = "SlidingMenu";
+    private static final String TAG = "SlidingLayout";
     private Scroller mScroller;//弹性滑动
     public static boolean isIntercept = false;
     private VelocityTracker mVelocityTracker;//速度跟踪器
-    private int mTouchSlop;//被判定为滑动的最小距离
     private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用
     private int mScrollTime = 500;
@@ -48,7 +47,6 @@ public class SlidingLayout extends ViewGroup {
     }
 
     private void init() {
-        mTouchSlop = ViewConfiguration.getTouchSlop();
         mScroller = new Scroller(getContext());
         mVelocityTracker = VelocityTracker.obtain();
         mScaleTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
@@ -81,15 +79,15 @@ public class SlidingLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.d(TAG, "l = " + l + "....." + "t = " + t + "....." + "r = " + r + "....." + "b = " + b);
+//        Log.d(TAG, "l = " + l + "....." + "t = " + t + "....." + "r = " + r + "....." + "b = " + b);
         if(!ensureChildren()) {
             throw new RuntimeException("Only one child is allowed.");
         }
         content = getChildAt(0);
         contentWidth = content.getMeasuredWidth();
         content.layout(0, 0, contentWidth, content.getMeasuredHeight());
-        Log.d(TAG, "content.getMeasuredWidth() = " + content.getMeasuredWidth() +
-                "content.getMeasuredHeight() = " + content.getMeasuredHeight());
+//        Log.d(TAG, "content.getMeasuredWidth() = " + content.getMeasuredWidth() +
+//                "--content.getMeasuredHeight() = " + content.getMeasuredHeight());
     }
 
     @Override
@@ -101,18 +99,18 @@ public class SlidingLayout extends ViewGroup {
                 mFirstY = mLastY = ev.getY();
                 isIntercept = false;
             case MotionEvent.ACTION_MOVE:
-                Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE" + ev.getX() + "-->" + mFirstX + "-->" + mLastX);
+                Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE" + ev.getX() + "-mFirstX->" + mFirstX + "-mLastX->" + mLastX);
                 float deltaX = ev.getX() - mLastX;
                 float deltaY = ev.getY() - mLastY;
                 mMove = ev.getX() - mFirstX;
                 Log.d(TAG, "onInterceptTouchEvent..ACTION_MOVE..mMove:" + mMove + "..deltaX:" + deltaX  + "..deltaY:" + deltaY);
-                if (mMove > 0 && Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (mMove > 0 && Math.abs(deltaX) > mScaleTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
                     Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE-----右滑动");
                     isIntercept = true;
-                } else if (mMove < 0 && Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
+                } else if (mMove < 0 && Math.abs(deltaX) > mScaleTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
                     Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE-----左滑动");
                     isIntercept = false;
-                } else if (Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) < Math.abs(deltaY)) {
+                } else if (Math.abs(deltaX) > mScaleTouchSlop && Math.abs(deltaX) < Math.abs(deltaY)) {
                     isIntercept = false;
                 }
 //                if(Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)){
@@ -131,6 +129,7 @@ public class SlidingLayout extends ViewGroup {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Log.d(TAG, "onTouchEvent.........ACTION_DOWN");
+                mMove = 0;
                 return true;
             case MotionEvent.ACTION_MOVE:
                 Log.d(TAG, "onTouchEvent.........ACTION_MOVE");
@@ -139,7 +138,7 @@ public class SlidingLayout extends ViewGroup {
                 mLastY = event.getY();
                 break;
             case MotionEvent.ACTION_UP: //根据滚动的距离判断怎么还原
-                Log.d(TAG, "onTouchEvent.........ACTION_UP");
+                Log.d(TAG, "onTouchEvent.........ACTION_UP..mMove:" + mMove + "-mFirstX->" + mFirstX + "-mLastX->" + mLastX);
                 mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                 int vx = (int) Math.abs(mVelocityTracker.getXVelocity());
                 mVelocityTracker.clear();
@@ -156,13 +155,17 @@ public class SlidingLayout extends ViewGroup {
                 }
                 //正常滑动的处理
                 //当滑动距离小于Menu宽度的一半时，平滑滑动到主页面
-                if (getScrollX() > -getWidth() / 2) {
-                    hideMenuComplete();
-                    return true;
-                } else {
-                    //当滑动距离大于Menu宽度的一半时，平滑滑动到Menu页面
-                    showMenuComplete();
-                    return true;
+                float moveX = mFirstX - mLastX;
+                Log.d(TAG, "onTouchEvent.........ACTION_UP..moveX:" + moveX);
+                if(Math.abs(moveX) > mScaleTouchSlop) {
+                    if (moveX > 0 || (getScrollX() != 0 && getScrollX() > -getWidth() / 2)) {
+                        hideMenuComplete();
+                        return true;
+                    } else {
+                        //当滑动距离大于Menu宽度的一半时，平滑滑动到Menu页面
+                        showMenuComplete();
+                        return true;
+                    }
                 }
         }
         return super.onTouchEvent(event);

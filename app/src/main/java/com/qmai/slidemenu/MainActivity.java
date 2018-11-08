@@ -4,13 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.qmai.dialoglib.CustomDialog;
+import com.qmai.dialoglib.CustomDialogFragment;
+import com.qmai.dialoglib.CustomPopupWindow;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button btnPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btnPopupWindow = findViewById(R.id.popupWindow);
     }
 
     public void onClick(View view) {
@@ -21,7 +30,70 @@ public class MainActivity extends AppCompatActivity {
             case R.id.slideBack:
                 startActivity(new Intent(MainActivity.this, SlideBackActivity.class));
                 break;
+            case R.id.dialog:
+                showDialog();
+                break;
+            case R.id.dialogFragment:
+                showDialogFragment();
+                break;
+            case R.id.popupWindow:
+                showPopupWindow();
+                break;
         }
+    }
+
+    private void showPopupWindow() {
+        CustomPopupWindow.Builder builder = new CustomPopupWindow.Builder(this);
+        builder
+                .setContentView(R.layout.dialog)
+//                .setFullScreen(true)
+                .setBackgroundDrawable(true)
+                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setViewListener(new CustomPopupWindow.Builder.OnInitListener() {
+                    @Override
+                    public void init(CustomPopupWindow popupWindow, View view) {
+                        Button text1 = view.findViewById(R.id.button);
+                        text1.setText("你好");
+                        popupWindow.showAsDropDown(btnPopupWindow);
+                    }
+                })
+                .build();
+    }
+
+    private void showDialogFragment() {
+        CustomDialogFragment.Builder builder = new CustomDialogFragment.Builder(this);
+        builder
+                .setContentView(R.layout.dialog)
+//                .setFullScreen(true)
+                .setExistDialogLined(true)
+                .setBackgroundDrawable(true)
+                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setOnInitListener(new CustomDialogFragment.Builder.OnInitListener() {
+                    @Override
+                    public void init(CustomDialogFragment dialogFragment, View view) {
+                        Button text1 = view.findViewById(R.id.button);
+                        text1.setText("你好");
+                    }
+                })
+                .build(getFragmentManager(), "xxxDialogFragment");
+    }
+
+    private void showDialog() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        builder
+                .setContentView(R.layout.dialog)
+//                .setFullScreen(true)
+                .setExistDialogLined(true)
+                .setBackgroundDrawable(true)
+                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setOnInitListener(new CustomDialog.Builder.OnInitListener() {
+                    @Override
+                    public void init(CustomDialog customDialog) {
+                        Button text1 = customDialog.findViewById(R.id.button);
+                        text1.setText("你好");
+                    }
+                })
+                .build();
     }
 
 }

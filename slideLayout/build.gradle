@@ -47,7 +47,7 @@ ext {
 
     //GROUP_ID:ARTIFACT_ID:VERSION
     publishedGroupId = 'org.dync.kathline'//依赖时的GROUP_ID
-    libraryName = 'SlideMenuLib'
+    libraryName = 'slideLayout'
     artifact = 'slideLayout'//依赖时的ARTIFACT_ID，这里要与类库名保持一致，即项目的module名
 
     libraryDescription = '' //项目的描述

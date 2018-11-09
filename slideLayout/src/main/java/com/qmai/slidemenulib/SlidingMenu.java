@@ -116,15 +116,9 @@ public class SlidingMenu extends ViewGroup {
                 if (mMove > 0 && Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
                     Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE-----右滑动");
                     isIntercept = true;
-                    if (slidingListener != null) {
-                        isIntercept = slidingListener.slidingInterceptRight();
-                    }
                 } else if (mMove < 0 && Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) > Math.abs(deltaY)) {
                     Log.d(TAG, "onInterceptTouchEvent.........ACTION_MOVE-----左滑动");
                     isIntercept = false;
-                    if (slidingListener != null) {
-                        isIntercept = slidingListener.slidingInterceptLeft();
-                    }
                 } else if (Math.abs(deltaX) > mTouchSlop && Math.abs(deltaX) < Math.abs(deltaY)) {
                     isIntercept = false;
                 }

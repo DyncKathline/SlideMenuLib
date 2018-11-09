@@ -158,7 +158,7 @@ public class SlidingLayout extends ViewGroup {
                 float moveX = mFirstX - mLastX;
                 Log.d(TAG, "onTouchEvent.........ACTION_UP..moveX:" + moveX);
                 if(Math.abs(moveX) > mScaleTouchSlop) {
-                    if (moveX > 0 || (getScrollX() != 0 && getScrollX() > -getWidth() / 2)) {
+                    if (moveX > 0) {
                         hideMenuComplete();
                         return true;
                     } else {

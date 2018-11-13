@@ -27,7 +27,7 @@ public class SlideMenuActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         initData();
         mRecyclerView.setLayoutManager(new LinearLayoutManager( this));
-        mRecyclerView.setAdapter(mAdapter = new SlideAdapter(this));
+        mRecyclerView.setAdapter(mAdapter = new SlideAdapter(this, mRecyclerView));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setData(data);
     }

@@ -6,20 +6,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
+import com.qmai.crashlib.CrashHandler;
 import com.qmai.dialoglib.CustomDialog;
 import com.qmai.dialoglib.CustomDialogFragment;
 import com.qmai.dialoglib.CustomPopupWindow;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final String TAG = getClass().getSimpleName();
     Button btnPopupWindow;
+    private RelativeLayout rl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnPopupWindow = findViewById(R.id.popupWindow);
+//        btnPopupWindow = findViewById(R.id.popupWindow);
+        CrashHandler.getInstance().init(this).setEnable(true);
+        rl = findViewById(R.id.slidingMenu);
     }
 
     public void onClick(View view) {
@@ -29,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.slideBack:
                 startActivity(new Intent(MainActivity.this, SlideBackActivity.class));
+                break;
+            case R.id.itemDecoration:
+                startActivity(new Intent(MainActivity.this, ItemDecorationActivity.class));
                 break;
             case R.id.dialog:
                 showDialog();

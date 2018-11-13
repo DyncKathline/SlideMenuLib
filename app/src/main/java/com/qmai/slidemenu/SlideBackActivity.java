@@ -3,7 +3,7 @@ package com.qmai.slidemenu;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -35,13 +35,14 @@ public class SlideBackActivity extends AppCompatActivity {
             @Override
             public void slidingInterceptRight() {
                 Log.e(TAG, "slidingInterceptRight: 右滑");
-                finish();
+//                finish();
             }
         });
 
         initData();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager( this));
-        mRecyclerView.setAdapter(mAdapter = new SlideAdapter(this));
+//        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        mRecyclerView.setAdapter(mAdapter = new SlideAdapter(this, mRecyclerView));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setData(data);
     }
@@ -50,5 +51,15 @@ public class SlideBackActivity extends AppCompatActivity {
         for (int i = 0; i < 20; i++) {
             data.add("测试数据" + i);
         }
+    }
+
+    public static boolean isLeft(int rowNum, int index) {
+
+        return index % rowNum == 0;
+    }
+
+    public static boolean isRight(int rowNum, int index) {
+
+        return index % rowNum == rowNum - 1;
     }
 }

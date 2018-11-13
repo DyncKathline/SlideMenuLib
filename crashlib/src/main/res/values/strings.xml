@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="colorAccent">#ff6090</color>
+<color name="colorPrimary">#e91e63</color>
+<color name="colorPrimaryDark">#b0003a</color>
+<color name="textColor">#ff6090</color>
+<dimen name="simple_text_item_size">18sp</dimen>
+<string name="app_name">CrashLib</string>
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+</style>
+</resources>

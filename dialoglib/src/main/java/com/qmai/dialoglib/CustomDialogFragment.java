@@ -26,13 +26,13 @@ import java.io.Serializable;
  .setExistDialogLined(true)
  .setBackgroundDrawable(true)
  .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
- .build(getFragmentManager(), "xxxDialogFragment");
- dialogFragment.setOnInitListener(new CustomDialogFragment.OnInitListener() {
+ .setOnInitListener(new CustomDialogFragment.OnInitListener() {
 @Override
 public void init(View view) {
 
 }
-});
+})
+ .build(getFragmentManager(), "xxxDialogFragment");
  </pre>
  */
 

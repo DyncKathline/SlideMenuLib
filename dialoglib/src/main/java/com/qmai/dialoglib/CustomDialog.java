@@ -19,13 +19,13 @@ import android.view.WindowManager;
  .setExistDialogLined(true)
  .setBackgroundDrawable(true)
  .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
- .build()
- .show(new CustomDialog.Builder.OnInitListener() {
+ .setOnInitListener(new CustomDialog.Builder.OnInitListener() {
 @Override
 public void init(CustomDialog customDialog) {
 
 }
-});
+})
+.build();
  </pre>
  */
 public class CustomDialog extends Dialog {
@@ -79,6 +79,9 @@ public class CustomDialog extends Dialog {
         if (builder.cancelable) {
             setCanceledOnTouchOutside(true);
         }
+        if(builder.onInitListener != null) {
+            builder.onInitListener.init(this);
+        }
     }
 
     public interface onTouchOutsideListener {
@@ -103,7 +106,7 @@ public class CustomDialog extends Dialog {
         public int offsetY;
         public int width;
         public int height;
-        public OnInitListener listener;
+        public OnInitListener onInitListener;
 
         public Builder(Context context) {
             this.context = context;
@@ -251,7 +254,7 @@ public class CustomDialog extends Dialog {
          * @return Builder
          */
         public Builder setOnInitListener(OnInitListener listener) {
-            this.listener = listener;
+            this.onInitListener = listener;
             return this;
         }
 

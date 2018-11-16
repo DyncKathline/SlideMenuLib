@@ -7,8 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.qmai.slidemenu.decoration.GridDividerItemDecoration;
-import com.qmai.slidemenu.decoration.LinearDividerItemDecoration;
+import com.qmai.slidemenu.decoration.ListSpacingDecoration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,10 @@ public class ItemDecorationActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         initData();
-        showGrid(GridLayoutManager.VERTICAL);
+//        showGrid(GridLayoutManager.VERTICAL);
+        showGrid(GridLayoutManager.HORIZONTAL);
+//        showLinear(LinearLayoutManager.VERTICAL);
+//        showLinear(LinearLayoutManager.HORIZONTAL);
         adapter = new SlideAdapter(this, recyclerView);
         recyclerView.setAdapter(adapter);
         adapter.setData(data);
@@ -120,21 +122,28 @@ public class ItemDecorationActivity extends AppCompatActivity {
     }
 
     public void showLinear(@RecyclerView.Orientation int orientation) {
-        if(itemDecoration != null) {
+        if (itemDecoration != null) {
             recyclerView.removeItemDecoration(itemDecoration);
         }
-        itemDecoration = new LinearDividerItemDecoration(this, orientation);
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, orientation, false));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(orientation);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new ListSpacingDecoration(40));
     }
 
     public void showGrid(@RecyclerView.Orientation int orientation) {
-        if(itemDecoration != null) {
+        if (itemDecoration != null) {
             recyclerView.removeItemDecoration(itemDecoration);
         }
-        itemDecoration = new GridDividerItemDecoration(this);
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3, orientation, false));
+        final int spanCount = 3;
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
+        layoutManager.setOrientation(orientation);
+        recyclerView.setLayoutManager(layoutManager);
+//        int spanCount = 3;
+        int spacing = 40;
+        boolean includeEdge = true;
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        recyclerView.addItemDecoration(new ListSpacingDecoration(spacing));
     }
 
     public void onClick(View view) {

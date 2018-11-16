@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        btnPopupWindow = findViewById(R.id.popupWindow);
+        btnPopupWindow = findViewById(R.id.popupWindow);
         CrashHandler.getInstance().init(this).setEnable(true);
         rl = findViewById(R.id.slidingMenu);
     }
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.itemDecoration:
                 startActivity(new Intent(MainActivity.this, ItemDecorationActivity.class));
+                break;
+            case R.id.gallery:
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
                 break;
             case R.id.dialog:
                 showDialog();
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentView(R.layout.dialog)
 //                .setFullScreen(true)
                 .setBackgroundDrawable(true)
-                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setViewListener(new CustomPopupWindow.Builder.OnInitListener() {
                     @Override
                     public void init(CustomPopupWindow popupWindow, View view) {
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //                .setFullScreen(true)
                 .setExistDialogLined(true)
                 .setBackgroundDrawable(true)
-                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setOnInitListener(new CustomDialogFragment.Builder.OnInitListener() {
                     @Override
                     public void init(CustomDialogFragment dialogFragment, View view) {
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 //                .setFullScreen(true)
                 .setExistDialogLined(true)
                 .setBackgroundDrawable(true)
-                .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setOnInitListener(new CustomDialog.Builder.OnInitListener() {
                     @Override
                     public void init(CustomDialog customDialog) {

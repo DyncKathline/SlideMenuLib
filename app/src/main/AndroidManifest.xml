@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".SlideMenuActivity" />
         <activity android:name=".SlideBackActivity" />
-        <activity android:name=".ItemDecorationActivity"></activity>
+        <activity android:name=".ItemDecorationActivity" />
+        <activity android:name=".GalleryActivity"></activity>
     </application>
 
 </manifest>

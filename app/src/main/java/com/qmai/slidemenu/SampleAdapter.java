@@ -35,8 +35,14 @@ public class SampleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         textView.setTypeface(null, Typeface.BOLD);
 
         view.addView(textView);
-        view.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
-        view.setGravity(Gravity.CENTER 	);
+        //自定义view的宽度，控制一屏显示个数
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int width = parent.getResources().getDisplayMetrics().widthPixels;
+        params.width = width / 3;
+        params.height = width / 3;
+        view.setLayoutParams(params);
+//        view.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+        view.setGravity(Gravity.CENTER );
         return new ItemViewHolder(view);
     }
 

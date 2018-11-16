@@ -1,5 +1,6 @@
 package com.qmai.slidemenu;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +13,23 @@ import java.util.List;
 public class GalleryActivity extends AppCompatActivity {
 
     private final String TAG = getClass().getSimpleName();
+    private Context context;
+    private View lastSnappedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+        context = this;
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
+        gallery(recyclerView);
+        SampleAdapter sampleAdapter = new SampleAdapter(getSampleList());
+        recyclerView.setAdapter(sampleAdapter);
+    }
+
+    private void gallery(RecyclerView recyclerView) {
         GalleryLayoutManager manager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
         manager.attach(recyclerView);
         //设置滑动缩放效果
@@ -41,14 +51,12 @@ public class GalleryActivity extends AppCompatActivity {
                 Log.i(TAG, "onItemSelected: " + position);
             }
         });
-        SampleAdapter sampleAdapter = new SampleAdapter(getSampleList());
-        recyclerView.setAdapter(sampleAdapter);
     }
 
     private List<String> getSampleList() {
         List<String> sampleList = new ArrayList<>();
 
-        for (int i = 1; i <= 20; i++) {
+        for (int i = 1; i <= 2; i++) {
             sampleList.add(i + "");
         }
 

@@ -109,7 +109,7 @@ public final class CrashToolUtils {
         //退出程序
         AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         mgr.set(AlarmManager.RTC, System.currentTimeMillis() + Delayed,restartIntent);
-        ToolLogUtils.w(CrashHandler.TAG, "reStartApp--- 用来重启本APP--2---"+clazz);
+//        ToolLogUtils.w(CrashHandler.TAG, "reStartApp--- 用来重启本APP--2---"+clazz);
         //exitApp();
         killCurrentProcess(true);
     }
@@ -118,7 +118,7 @@ public final class CrashToolUtils {
         String packageName = context.getPackageName();
         Activity activity = ToolAppManager.getAppManager().currentActivity();
         Class<? extends Activity> clazz = guessRestartActivityClass(activity);
-        ToolLogUtils.w(CrashHandler.TAG, "reStartApp--- 用来重启本APP--3-"+packageName + "--"+clazz);
+//        ToolLogUtils.w(CrashHandler.TAG, "reStartApp--- 用来重启本APP--3-"+packageName + "--"+clazz);
         Intent intent = new Intent(activity, clazz);
         restartApplicationWithIntent(activity, intent);
     }

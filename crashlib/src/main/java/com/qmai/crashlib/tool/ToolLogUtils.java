@@ -20,6 +20,7 @@ import java.util.Date;
  */
 public final class ToolLogUtils {
 
+    private static boolean isDebug = false;
     private static final int VERBOSE = 1;
     private static final int DEBUG = 2;
     private static final int INFO = 3;
@@ -43,6 +44,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= VERBOSE) {
             android.util.Log.v(tag, msg);
         } else if (FILEABLE) {
@@ -59,6 +61,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= VERBOSE) {
             android.util.Log.v(FILE(), msg);
         } else if (FILEABLE) {
@@ -76,6 +79,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= DEBUG) {
             android.util.Log.d(tag, msg);
         } else if (FILEABLE) {
@@ -92,6 +96,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= DEBUG) {
             android.util.Log.d(FILE(), msg);
         } else if (FILEABLE) {
@@ -109,6 +114,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= INFO) {
             android.util.Log.i(tag, msg);
         } else if (FILEABLE) {
@@ -125,6 +131,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= INFO) {
             android.util.Log.i(FILE(), msg);
         } else if (FILEABLE) {
@@ -142,6 +149,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= WARN) {
             android.util.Log.w(tag, msg);
         } else if (FILEABLE) {
@@ -158,6 +166,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= WARN) {
             android.util.Log.w(FILE(), msg);
         } else if (FILEABLE) {
@@ -175,6 +184,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= ERROR) {
             android.util.Log.e(tag, msg);
         } else if (FILEABLE) {
@@ -191,6 +201,7 @@ public final class ToolLogUtils {
         if ($(msg)) {
             return;
         }
+        if(!isDebug) return;
         if (LEVEL <= ERROR) {
             android.util.Log.e(FILE(), msg);
         } else if (FILEABLE) {

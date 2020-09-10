@@ -162,8 +162,8 @@ public final class CrashFileUtils {
                     return;
                 }
             }
-            ToolLogUtils.i(CrashHandler.TAG, "保存异常的log文件名称：" + fileName);
-            ToolLogUtils.i(CrashHandler.TAG, "保存异常的log文件file：" + file);
+//            ToolLogUtils.i(CrashHandler.TAG, "保存异常的log文件名称：" + fileName);
+//            ToolLogUtils.i(CrashHandler.TAG, "保存异常的log文件file：" + file);
             //开始写日志
             pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             //判断有没有额外信息需要写入
@@ -230,7 +230,7 @@ public final class CrashFileUtils {
             if(builder.maxLogCount > allName.size()) {
                 count = 0;
             }else {
-                count = builder.maxLogCount;
+                count = allName.size() - builder.maxLogCount;
             }
             for (int i = 0; i < count; i++) {
                 String name = allName.get(i);

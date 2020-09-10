@@ -48,7 +48,7 @@ ext {
     siteUrl = 'https://github.com/DyncKathline' // 项目的主页
     gitUrl = '' // Git仓库的url
 
-    libraryVersion = "2.0.0" //依赖时的VERSION
+    libraryVersion = "2.1.0" //依赖时的VERSION
 
     developerId = 'dync'
     developerName = 'DyncKathline'

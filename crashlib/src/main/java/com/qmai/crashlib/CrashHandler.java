@@ -3,6 +3,7 @@ package com.qmai.crashlib;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.qmai.crashlib.tool.ToolLogUtils;
 
@@ -142,7 +143,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } else {
             //否则自己处理
             if (mContext instanceof Application) {
-                ToolLogUtils.w(TAG, "handleException--- ex----重启activity-");
+//                ToolLogUtils.w(TAG, "handleException--- ex----重启activity-");
                 if (mBuilder.listener != null) {
                     mBuilder.listener.againStartApp();
                 }
@@ -175,15 +176,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      */
     private boolean handleException(Throwable ex) {
         if (ex == null) {
-            ToolLogUtils.w(TAG, "handleException--- ex==null");
+//            ToolLogUtils.w(TAG, "handleException--- ex==null");
             return false;
         }
-        //收集crash信息
-        String msg = ex.getLocalizedMessage();
-        if (msg == null) {
-            return false;
-        }
-//        ToolLogUtils.w(TAG, "handleException--- ex-----"+msg);
+        //输出crash信息
+        Log.e("", "", ex);
+//        String msg = ex.getLocalizedMessage();
+//        if (msg == null) {
+//            return false;
+//        }
         ex.printStackTrace();
         if(mBuilder.mEnable) {
             //收集设备信息

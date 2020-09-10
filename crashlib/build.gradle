@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -49,7 +48,7 @@ ext {
     siteUrl = 'https://github.com/DyncKathline' // 项目的主页
     gitUrl = '' // Git仓库的url
 
-    libraryVersion = '1.0.0' //依赖时的VERSION
+    libraryVersion = "2.0.0" //依赖时的VERSION
 
     developerId = 'dync'
     developerName = 'DyncKathline'

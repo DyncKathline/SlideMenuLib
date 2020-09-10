@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.qmai.crashlib.CrashHandler;
+import com.qmai.crashlib.CrashListener;
 import com.qmai.dialoglib.CustomDialog;
 import com.qmai.dialoglib.CustomDialogFragment;
 import com.qmai.dialoglib.CustomPopupWindow;
@@ -24,7 +25,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnPopupWindow = findViewById(R.id.popupWindow);
-        CrashHandler.getInstance().init(this).setEnable(true);
+        CrashHandler.Builder builder = new CrashHandler.Builder();
+        builder.setMaxLogCount(10, true)
+                .setOnCrashListener(new CrashListener() {
+                    /**
+                     * 重启app
+                     */
+                    @Override
+                    public void againStartApp() {
+                        System.out.println("崩溃重启----------againStartApp------");
+                    }
+
+                    /**
+                     * 自定义上传crash，支持开发者上传自己捕获的crash数据
+                     * @param ex                        ex
+                     */
+                    @Override
+                    public void recordException(Throwable ex) {
+                        System.out.println("崩溃重启----------recordException------");
+                    }
+                });
+        CrashHandler.getInstance().init(getApplication(), builder);
         rl = findViewById(R.id.slidingMenu);
     }
 

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -77,6 +78,7 @@ public class CrashDetailsActivity extends AppCompatActivity implements View.OnCl
     private Handler handler = new Handler();
     private LinearLayout mActivityCrashList;
     private LinearLayout mLlBack;
+    private TextView mTvHistory;
     private TextView mTvShare;
     private TextView mTvCopy;
     private TextView mTvScreenshot;
@@ -102,6 +104,7 @@ public class CrashDetailsActivity extends AppCompatActivity implements View.OnCl
     private void initFindViewById() {
         mActivityCrashList = findViewById(R.id.activity_crash_list);
         mLlBack = findViewById(R.id.ll_back);
+        mTvHistory = findViewById(R.id.tv_history);
         mTvShare = findViewById(R.id.tv_share);
         mTvCopy = findViewById(R.id.tv_copy);
         mTvScreenshot = findViewById(R.id.tv_screenshot);
@@ -188,6 +191,7 @@ public class CrashDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private void initListener(){
         mLlBack.setOnClickListener(this);
+        mTvHistory.setOnClickListener(this);
         mTvShare.setOnClickListener(this);
         mTvCopy.setOnClickListener(this);
         mTvScreenshot.setOnClickListener(this);
@@ -309,6 +313,10 @@ public class CrashDetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.ll_back) {
+            finish();
+        } else if(i == R.id.tv_history) {
+            Intent intent = new Intent(CrashDetailsActivity.this, CrashListActivity.class);
+            startActivity(intent);
             finish();
         } else if (i == R.id.tv_share) {
             //先把文件转移到外部存储文件

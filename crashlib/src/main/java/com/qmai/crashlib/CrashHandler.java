@@ -134,6 +134,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
         if(mBuilder ==null) return;
         initCustomBug(ex);
+        Log.e("", "", ex);
         boolean isHandle = handleException(ex);
         if (mDefaultHandler != null && !isHandle) {
             //收集完信息后，交给系统自己处理崩溃

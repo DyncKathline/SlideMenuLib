@@ -2,11 +2,12 @@ package com.qmai.slidemenu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.qmai.crashlib.CrashHandler;
 import com.qmai.crashlib.CrashListener;
@@ -51,12 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.slideMenu:
-                startActivity(new Intent(MainActivity.this, SlideMenuActivity.class));
-                break;
-            case R.id.slideBack:
-                startActivity(new Intent(MainActivity.this, SlideBackActivity.class));
-                break;
             case R.id.itemDecoration:
                 startActivity(new Intent(MainActivity.this, ItemDecorationActivity.class));
                 break;

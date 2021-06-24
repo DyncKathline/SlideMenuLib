@@ -3,17 +3,18 @@ package com.qmai.dialoglib;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.LayoutRes;
 
 import java.io.Serializable;
 
@@ -28,7 +29,7 @@ import java.io.Serializable;
  .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
  .setOnInitListener(new CustomDialogFragment.OnInitListener() {
 @Override
-public void init(View view) {
+public void init(CustomDialogFragment dialogFragment, View view) {
 
 }
 })
@@ -53,15 +54,22 @@ public class CustomDialogFragment extends DialogFragment {
         }
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLayout();
         View view = inflater.inflate(builder.layoutId, container);
-        if (builder.mOnInitListener != null){
-            builder.mOnInitListener.init(this, view);
+        if (builder.onInitListener != null){
+            builder.onInitListener.init(this, view);
         }
         return view;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(builder.onTouchOutsideListener != null) {
+            builder.onTouchOutsideListener.touchOutSide();
+        }
     }
 
     private void setLayout() {
@@ -105,6 +113,10 @@ public class CustomDialogFragment extends DialogFragment {
         }
     }
 
+    public Builder getBuilder() {
+        return builder;
+    }
+
     public static class Builder implements Serializable {
         public Context context;
         public int layoutId;
@@ -119,14 +131,15 @@ public class CustomDialogFragment extends DialogFragment {
         public int offsetY;
         public int width;
         public int height;
-        public OnInitListener mOnInitListener;
+        public OnInitListener onInitListener;
+        public OnTouchOutsideListener onTouchOutsideListener;
 
         public Builder(Context context) {
             this.context = context;
             layoutId = android.R.layout.select_dialog_item;
             gravity = Gravity.CENTER;
             animId = 0;
-            backgroundDrawableable = false;
+            backgroundDrawableable = true;
             dimAmount = 0.5f;
             cancelable = true;
             existDialogLined = true;
@@ -205,7 +218,7 @@ public class CustomDialogFragment extends DialogFragment {
         }
 
         /**
-         * 是否给Dialog的背景设置透明，默认false
+         * 是否给Dialog的背景设置透明，默认true
          *
          * @param backgroundDrawableable
          * @return
@@ -216,7 +229,7 @@ public class CustomDialogFragment extends DialogFragment {
         }
 
         /**
-         * 设置Dialog之外的背景透明度，0~1之间，默认值 0.5f，半透明
+         * 设置Dialog之外的背景透明度，0~1之间，默认值 0.5f，半透明，越小也透明
          *
          * @param dimAmount
          * @return
@@ -271,8 +284,17 @@ public class CustomDialogFragment extends DialogFragment {
          * @return Builder
          */
         public Builder setOnInitListener(OnInitListener listener){
-            mOnInitListener = listener;
+            onInitListener = listener;
             return this;
+        }
+
+        public Builder setOnTouchOutsideListener(OnTouchOutsideListener listener){
+            onTouchOutsideListener = listener;
+            return this;
+        }
+
+        public interface OnTouchOutsideListener{
+            void touchOutSide();
         }
 
         public CustomDialogFragment build(FragmentManager manager, String tag){

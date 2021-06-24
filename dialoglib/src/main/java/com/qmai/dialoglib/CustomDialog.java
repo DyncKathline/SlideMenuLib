@@ -4,11 +4,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.LayoutRes;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.LayoutRes;
+
+import java.io.Serializable;
 
 /**
  * Created by KathLine on 2016/11/17.</br>
@@ -25,7 +31,7 @@ public void init(CustomDialog customDialog) {
 
 }
 })
-.build();
+ .build();
  </pre>
  */
 public class CustomDialog extends Dialog {
@@ -62,6 +68,8 @@ public class CustomDialog extends Dialog {
         }
         if (builder.backgroundDrawableable) {
             window.setBackgroundDrawable(new ColorDrawable(0));
+        }else {
+            window.setBackgroundDrawable(null);
         }
         if (builder.dimAmount < 0f || builder.dimAmount > 1f) {
             throw new RuntimeException("透明度必须在0~1之间");
@@ -78,21 +86,46 @@ public class CustomDialog extends Dialog {
         setCancelable(builder.cancelable);
         if (builder.cancelable) {
             setCanceledOnTouchOutside(true);
+        }else {
+            setCanceledOnTouchOutside(false);
         }
         if(builder.onInitListener != null) {
             builder.onInitListener.init(this);
         }
     }
 
-    public interface onTouchOutsideListener {
-        void touchOutSide();
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        /* 触摸外部弹窗 */
+        if (isOutOfBounds(getContext(), event)) {
+            if(builder.onTouchOutsideListener != null) {
+                builder.onTouchOutsideListener.touchOutSide();
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    /**
+     * 判断当前用户触摸是否超出了Dialog的显示区域
+     *
+     * @param context
+     * @param event
+     * @return
+     */
+    private boolean isOutOfBounds(Context context, MotionEvent event) {
+        final int x = (int) event.getX();
+        final int y = (int) event.getY();
+        final int slop = ViewConfiguration.get(context).getScaledWindowTouchSlop();
+        final View decorView = getWindow().getDecorView();
+        return (x < -slop) || (y < -slop) || (x > (decorView.getWidth() + slop))
+                || (y > (decorView.getHeight() + slop));
     }
 
     public Builder getBuilder() {
         return builder;
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
         public Context context;
         public int layoutId;
         public int gravity;
@@ -107,13 +140,14 @@ public class CustomDialog extends Dialog {
         public int width;
         public int height;
         public OnInitListener onInitListener;
+        public OnTouchOutsideListener onTouchOutsideListener;
 
         public Builder(Context context) {
             this.context = context;
             layoutId = android.R.layout.select_dialog_item;
             gravity = Gravity.CENTER;
             animId = 0;
-            backgroundDrawableable = false;
+            backgroundDrawableable = true;
             dimAmount = 0.5f;
             cancelable = true;
             existDialogLined = true;
@@ -204,7 +238,7 @@ public class CustomDialog extends Dialog {
         }
 
         /**
-         * 设置Dialog之外的背景透明度，0~1之间，默认值 0.5f，半透明
+         * 设置Dialog之外的背景透明度，0~1之间，默认值 0.5f，半透明，越小也透明
          *
          * @param dimAmount
          * @return
@@ -256,6 +290,15 @@ public class CustomDialog extends Dialog {
         public Builder setOnInitListener(OnInitListener listener) {
             this.onInitListener = listener;
             return this;
+        }
+
+        public Builder setOnTouchOutsideListener(OnTouchOutsideListener listener){
+            onTouchOutsideListener = listener;
+            return this;
+        }
+
+        public interface OnTouchOutsideListener{
+            void touchOutSide();
         }
 
         public interface OnInitListener {

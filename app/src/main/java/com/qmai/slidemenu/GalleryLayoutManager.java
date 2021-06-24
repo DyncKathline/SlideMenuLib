@@ -3,20 +3,19 @@ package com.qmai.slidemenu;
 import android.content.Context;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * A custom LayoutManager to build a {@link android.widget.Gallery} or a {@link android.support.v4.view.ViewPager}like {@link RecyclerView} and
+ * A custom LayoutManager to build a {@link android.widget.Gallery} or a {@link androidx.viewpager.widget.ViewPager}like {@link androidx.recyclerview.widget.RecyclerView} and
  * support both {@link GalleryLayoutManager#HORIZONTAL} and {@link GalleryLayoutManager#VERTICAL} scroll.
  * Created by chensuilun on 2016/11/18.
  */
@@ -940,7 +939,7 @@ public class GalleryLayoutManager extends RecyclerView.LayoutManager implements 
                     mCurSelectedView = snap;
                     mCurSelectedView.setSelected(true);
                     mCurSelectedPosition = selectedPosition;
-                    if (!mCallbackInFling && mState != SCROLL_STATE_IDLE) {
+                    if (!mCallbackInFling && mState != RecyclerView.SCROLL_STATE_IDLE) {
                         if (BuildConfig.DEBUG) {
                             Log.v(TAG, "ignore selection change callback when fling ");
                         }
@@ -964,7 +963,7 @@ public class GalleryLayoutManager extends RecyclerView.LayoutManager implements 
             if (BuildConfig.DEBUG) {
                 Log.v(TAG, "onScrollStateChanged: " + newState);
             }
-            if (mState == SCROLL_STATE_IDLE) {
+            if (mState == RecyclerView.SCROLL_STATE_IDLE) {
                 View snap = mSnapHelper.findSnapView(recyclerView.getLayoutManager());
                 if (snap != null) {
                     int selectedPosition = recyclerView.getLayoutManager().getPosition(snap);

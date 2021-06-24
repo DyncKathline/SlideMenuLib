@@ -1,1 +1,1 @@
-include ':app', ':dialoglib', ':slideLayout', ':crashlib'
+include ':app', ':dialoglib', ':crashlib'

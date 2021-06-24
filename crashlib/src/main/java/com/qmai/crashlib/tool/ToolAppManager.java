@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -164,7 +163,7 @@ public class ToolAppManager {
      *
      * @return {@code true}: 存在<br>{@code false}: 不存在
      */
-    public boolean isActivityExistsInStack(@NonNull final Class<?> clz) {
+    public boolean isActivityExistsInStack(final Class<?> clz) {
         if(activityStack!=null && activityStack.size()>0){
             for (Activity aActivity : activityStack) {
                 if (aActivity.getClass().equals(clz)) {

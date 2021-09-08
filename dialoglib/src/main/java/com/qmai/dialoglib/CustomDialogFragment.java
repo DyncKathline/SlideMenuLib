@@ -1,7 +1,5 @@
 package com.qmai.dialoglib;
 
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
@@ -15,31 +13,45 @@ import android.view.WindowManager;
 
 import androidx.annotation.FloatRange;
 import androidx.annotation.LayoutRes;
-
-import java.io.Serializable;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Created by KathLine on 2016/11/17.</br>
  * <p>使用说明</p>
  * <pre>
- CustomDialogFragment.Builder builder = new CustomDialogFragment.Builder(this);
- CustomDialogFragment dialogFragment = builder.setFullScreen(true)
- .setExistDialogLined(true)
- .setBackgroundDrawable(true)
- .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
- .setOnInitListener(new CustomDialogFragment.OnInitListener() {
-@Override
-public void init(CustomDialogFragment dialogFragment, View view) {
-
-}
-})
- .build(getFragmentManager(), "xxxDialogFragment");
- </pre>
+ * CustomDialogFragment.Builder builder = new CustomDialogFragment.Builder(this);
+ * CustomDialogFragment dialogFragment = builder.setFullScreen(true)
+ * .setExistDialogLined(true)
+ * .setBackgroundDrawable(true)
+ * .setLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+ * .setOnInitListener(new CustomDialogFragment.OnInitListener() {
+ * @Override
+ * public void init(CustomDialogFragment dialogFragment, View view) {
+ *
+ * }
+ * })
+ * .build(getFragmentManager(), "xxxDialogFragment");
+ * </pre>
  */
 
 public class CustomDialogFragment extends DialogFragment {
 
-    protected Builder builder;
+    public int layoutId;
+    public int gravity;
+    public int animId;
+    public boolean backgroundDrawableable;
+    public float dimAmount;
+    public boolean cancelable;
+    public boolean existDialogLined;
+    public boolean isFullScreen;
+    public int offsetX;
+    public int offsetY;
+    public int width;
+    public int height;
+    public Builder.OnInitListener onInitListener;
+    public Builder.OnTouchOutsideListener onTouchOutsideListener;
 
     public CustomDialogFragment() {
 
@@ -48,18 +60,29 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Builder builder = (Builder) getArguments().getSerializable("builder");
-        if (builder != null) {
-            this.builder = builder;
+        if (getArguments() != null) {
+            layoutId = getArguments().getInt("layoutId");
+            gravity = getArguments().getInt("gravity");
+            animId = getArguments().getInt("animId");
+            backgroundDrawableable = getArguments().getBoolean("backgroundDrawableable");
+            dimAmount = getArguments().getFloat("dimAmount");
+            cancelable = getArguments().getBoolean("cancelable");
+            existDialogLined = getArguments().getBoolean("existDialogLined");
+            isFullScreen = getArguments().getBoolean("isFullScreen");
+            offsetX = getArguments().getInt("offsetX");
+            offsetY = getArguments().getInt("offsetY");
+            width = getArguments().getInt("width");
+            height = getArguments().getInt("height");
         }
     }
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLayout();
-        View view = inflater.inflate(builder.layoutId, container);
-        if (builder.onInitListener != null){
-            builder.onInitListener.init(this, view);
+        View view = inflater.inflate(layoutId, container);
+        if (onInitListener != null) {
+            onInitListener.init(this, view);
         }
         return view;
     }
@@ -67,57 +90,53 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        if(builder.onTouchOutsideListener != null) {
-            builder.onTouchOutsideListener.touchOutSide();
+        if (onTouchOutsideListener != null) {
+            onTouchOutsideListener.touchOutSide();
         }
     }
 
     private void setLayout() {
-        if (builder.existDialogLined) {
+        if (existDialogLined) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         Window window = getDialog().getWindow();
-        window.setGravity(builder.gravity);
-        if(builder.animId != 0) {
-            window.setWindowAnimations(builder.animId);
+        window.setGravity(gravity);
+        if (animId != 0) {
+            window.setWindowAnimations(animId);
         }
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams lp = window.getAttributes();
-        if (builder.width != 0 && builder.height != 0) {
-            lp.width = builder.width;
-            lp.height = builder.height;
+        if (width != 0 && height != 0) {
+            lp.width = width;
+            lp.height = height;
         }
-        if (builder.isFullScreen) {
+        if (isFullScreen) {
             window.setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏，即没有系统状态栏
         }
-        if (builder.backgroundDrawableable) {
+        if (backgroundDrawableable) {
             window.setBackgroundDrawable(new ColorDrawable(0));
         }
-        if (builder.dimAmount < 0f || builder.dimAmount > 1f) {
+        if (dimAmount < 0f || dimAmount > 1f) {
             throw new RuntimeException("透明度必须在0~1之间");
         } else {
-            lp.dimAmount = builder.dimAmount;
+            lp.dimAmount = dimAmount;
         }
-        if (builder.offsetX != 0) {
-            lp.x = builder.offsetX;
+        if (offsetX != 0) {
+            lp.x = offsetX;
         }
-        if (builder.offsetY != 0) {
-            lp.y = builder.offsetY;
+        if (offsetY != 0) {
+            lp.y = offsetY;
         }
         window.setAttributes(lp);
-        setCancelable(builder.cancelable);
-        if (builder.cancelable) {
+        setCancelable(cancelable);
+        if (cancelable) {
             getDialog().setCanceledOnTouchOutside(true);
         }
     }
 
-    public Builder getBuilder() {
-        return builder;
-    }
-
-    public static class Builder implements Serializable {
+    public static class Builder {
         public Context context;
         public int layoutId;
         public int gravity;
@@ -272,7 +291,7 @@ public class CustomDialogFragment extends DialogFragment {
             return this;
         }
 
-        public interface OnInitListener{
+        public interface OnInitListener {
             void init(CustomDialogFragment dialogFragment, View view);
 
         }
@@ -283,27 +302,40 @@ public class CustomDialogFragment extends DialogFragment {
          * @param listener OnInitListener
          * @return Builder
          */
-        public Builder setOnInitListener(OnInitListener listener){
+        public Builder setOnInitListener(OnInitListener listener) {
             onInitListener = listener;
             return this;
         }
 
-        public Builder setOnTouchOutsideListener(OnTouchOutsideListener listener){
+        public Builder setOnTouchOutsideListener(OnTouchOutsideListener listener) {
             onTouchOutsideListener = listener;
             return this;
         }
 
-        public interface OnTouchOutsideListener{
+        public interface OnTouchOutsideListener {
             void touchOutSide();
         }
 
-        public CustomDialogFragment build(FragmentManager manager, String tag){
+        public CustomDialogFragment build(FragmentManager manager, String tag) {
             //谷歌推荐使用这种方式保存传进来的数据
             Bundle bundle = new Bundle();
-            bundle.putSerializable("builder", this);
+            bundle.putInt("layoutId", layoutId);
+            bundle.putInt("gravity", gravity);
+            bundle.putInt("animId", animId);
+            bundle.putBoolean("backgroundDrawableable", backgroundDrawableable);
+            bundle.putFloat("dimAmount", dimAmount);
+            bundle.putBoolean("cancelable", cancelable);
+            bundle.putBoolean("existDialogLined", existDialogLined);
+            bundle.putBoolean("isFullScreen", isFullScreen);
+            bundle.putInt("offsetX", offsetX);
+            bundle.putInt("offsetY", offsetY);
+            bundle.putInt("width", width);
+            bundle.putInt("height", height);
 
             CustomDialogFragment dialogFragment = new CustomDialogFragment();
             dialogFragment.setArguments(bundle);
+            dialogFragment.onInitListener = onInitListener;
+            dialogFragment.onTouchOutsideListener = onTouchOutsideListener;
 
             dialogFragment.show(manager, tag);
             return dialogFragment;
@@ -312,8 +344,9 @@ public class CustomDialogFragment extends DialogFragment {
 
     @Override
     public void dismiss() {
-        if(getFragmentManager() != null) {
+        if (getFragmentManager() != null) {
             super.dismiss();
         }
     }
 }
+
